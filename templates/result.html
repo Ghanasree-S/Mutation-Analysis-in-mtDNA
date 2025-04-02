@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Alignment & Disease Prediction Results</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            width: 80%;
+            margin: auto;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p, pre {
+            font-size: 16px;
+            margin: 10px auto;
+            width: 80%;
+            text-align: left;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .important {
+            background: #ffcccc;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .disease-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .disease-list li {
+            background: #ffeeba;
+            padding: 8px;
+            margin: 5px;
+            border-radius: 5px;
+            display: inline-block;
+        }
+        .locus-section {
+            background: #e3f2fd;
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>🧬 Global Alignment (Needleman-Wunsch)</h1>
+
+    {% if global_score is not none %}
+        <p><strong>Alignment Score:</strong> {{ global_score }}</p>
+        <pre>{{ aligned_seq1 }}</pre>
+        <pre>{{ aligned_seq2 }}</pre>
+    {% endif %}
+
+    <h2>🔍 Local Alignment (Smith-Waterman) Results</h2>
+
+    {% if local_results %}
+        {% for locus, result in local_results.items() %}
+        <div class="locus-section">
+            <p><strong>Locus:</strong> {{ locus }}</p>
+            <p><strong>Alignment Score:</strong> {{ result.score }}</p>
+            <pre>{{ result.aligned_seq1 }}</pre>
+            <pre>{{ result.aligned_seq2 }}</pre>
+            <p><strong>Mutations:</strong> {{ result.mutations|join(', ') }}</p>
+        </div>
+        {% endfor %}
+    {% else %}
+        <p>No local alignments were performed.</p>
+    {% endif %}
+
+    {% if top_locus and top_allele %}
+        <h2>🚨 Most Impactful Mutation</h2>
+        <div class="important">
+            <p><strong>Locus:</strong> {{ top_locus }}</p>
+            <p><strong>Allele:</strong> {{ top_allele }}</p>
+            <p>⚠️ This mutation is highly impactful and may be causing diseases.</p>
+        </div>
+
+        {% if predicted_diseases %}
+            <h2>⚠️ Predicted Diseases</h2>
+            <ul class="disease-list">
+                {% for disease in predicted_diseases %}
+                    <li>{{ disease }}</li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>No diseases found in the graph for this mutation.</p>
+        {% endif %}
+    {% endif %}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smith-Waterman Results</title>
+</head>
+<body>
+    <h1>Smith-Waterman Results for {{ locus }}</h1>
+    
+    <h3>Alignment Score: {{ sw_score }}</h3>
+
+    <h3>Aligned Wild-Type Locus Sequence:</h3>
+    <pre>{{ sw_aligned1 }}</pre>
+
+    <h3>Aligned Mutated Locus Sequence:</h3>
+    <pre>{{ sw_aligned2 }}</pre>
+
+    <a href="/">Back to Home</a>
+</body>
+</html>
